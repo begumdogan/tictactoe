@@ -1,4 +1,9 @@
 # tictactoe
+#
+## This is an implementation of the classic tic tac toe game with Vue 3.
+# 
+## The released version: https://tictactoe-begumdeniz.netlify.app/
+ 
 
 ## Project setup
 ```
