@@ -32,6 +32,14 @@ export default {
   
 
 methods:{
+setScore(winner){
+  if (winner === 'x') {
+    this.store.commit('score/setPlayerXScore')
+  } 
+  if (winner === 'o')  {
+    this.store.commit('score/setPlayerOScore')
+  }
+},
 calculateWinner(currentPlayer)
   {
      if (this.winner) return true
@@ -43,12 +51,7 @@ calculateWinner(currentPlayer)
            && this.board[2][i] === currentPlayer) {
              this.inProgress = false;
             this.winner = currentPlayer;
-            if (this.winner === 'x') {
-              this.store.commit('score/setPlayerXScore')
-            } 
-            if (this.winner === 'o')  {
-              this.store.commit('score/setPlayerOScore')
-            }
+            this.setScore(this.winner);
             return true;
       }
     }
@@ -60,7 +63,7 @@ calculateWinner(currentPlayer)
           && this.board[i][2] === currentPlayer) {
             this.inProgress = false;
             this.winner = currentPlayer;
-            
+            this.setScore(this.winner);
             return true;
       }
     }
@@ -71,7 +74,7 @@ calculateWinner(currentPlayer)
         && this.board[2][2] === currentPlayer) {
           this.inProgress = false;
             this.winner = currentPlayer;
-            
+            this.setScore(this.winner);
             return true;
     }
 
@@ -80,7 +83,7 @@ calculateWinner(currentPlayer)
         && this.board[0][2] === currentPlayer) {
           this.inProgress = false;
           this.winner = currentPlayer;
-          
+            this.setScore(this.winner);
             return true;
     }
     this.isDrawCount--;
