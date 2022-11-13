@@ -1,7 +1,20 @@
 <script>
 import cellItem from './CellItem.vue'
+import { computed } from 'vue'
+import { useStore } from 'vuex'
 
 export default {
+  setup() {
+    const store = useStore();
+    const playerXScore = computed(() => store.state.score.playerXScore)
+    const playerOScore = computed(() => store.state.score.playerOScore)
+
+    return {
+      store,
+      playerXScore,
+      playerOScore
+    }
+  },
   components: {
    cellItem
   },
@@ -16,6 +29,7 @@ export default {
       isDraw: false
     }
   },
+  
 
 methods:{
 calculateWinner(currentPlayer)
@@ -29,7 +43,13 @@ calculateWinner(currentPlayer)
            && this.board[2][i] === currentPlayer) {
              this.inProgress = false;
             this.winner = currentPlayer;
-        return true;
+            if (this.winner === 'x') {
+              this.store.commit('score/setPlayerXScore')
+            } 
+            if (this.winner === 'o')  {
+              this.store.commit('score/setPlayerOScore')
+            }
+            return true;
       }
     }
 
@@ -40,7 +60,8 @@ calculateWinner(currentPlayer)
           && this.board[i][2] === currentPlayer) {
             this.inProgress = false;
             this.winner = currentPlayer;
-        return true;
+            
+            return true;
       }
     }
 
@@ -50,7 +71,8 @@ calculateWinner(currentPlayer)
         && this.board[2][2] === currentPlayer) {
           this.inProgress = false;
             this.winner = currentPlayer;
-      return true;
+            
+            return true;
     }
 
     if (this.board[2][0] === currentPlayer 
@@ -58,7 +80,8 @@ calculateWinner(currentPlayer)
         && this.board[0][2] === currentPlayer) {
           this.inProgress = false;
           this.winner = currentPlayer;
-      return true;
+          
+            return true;
     }
     this.isDrawCount--;
     return false;
@@ -99,7 +122,9 @@ calculateWinner(currentPlayer)
 <template>
 <div class="game">
 <div class="board">
-
+<div class="score">
+<p> Player 1&nbsp; </p> {{ playerXScore }} : {{playerOScore}} <p> &nbsp;Player 2 </p>
+</div>
 <div v-for="(n, c) in 3" :key="c">
     <div v-for="(n, r) in 3" :key="r">
       <cellItem @click="markCell(r,c,currentPlayer)" 
@@ -140,6 +165,17 @@ calculateWinner(currentPlayer)
   flex-wrap: wrap;
   align-items: center;
 
+  width: 258px;
+  height: 258px;
+}
+
+.score{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  font-size: 1.25em;
+  text-align: center;
+  
   width: 258px;
   height: 258px;
 }
